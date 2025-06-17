@@ -1,26 +1,88 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: linear-gradient(to top, #391e0c, #20150b, #130d06);
+  /* --foreground: #f0ec9a; */
 }
 
 @theme inline {
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
+@theme {
+  --color-bg-secondary: #130d06;
+  --color-text-main: #ebc78d;
+  --color-text-light: #f0ec9a;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: linear-gradient(to top, #391e0c, #20150b, #130d06);
+    /* --foreground: #f0ec9a; */
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--background) no-repeat fixed;
+  /* color: var(--foreground); */
   font-family: Arial, Helvetica, sans-serif;
 }
+html,
+body {
+  height: 100vh;
+  min-height: 100vh;
+}
+.border-gradient{
+  background-clip: padding-box;
+  border: 2px solid transparent;
+  position: relative
+}
+.border-gradient::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 3px;
+  background: linear-gradient(to right, orange, red);
+
+}
+/* to get transparent border */
+.border-gradient {
+  /* gradient for content + padding. X Border X */
+  background-clip: padding-box;
+  border: 3px solid transparent;
+  position: relative;
+}
+/* to get padding area */
+.border-gradient::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  mask:
+  /* 1) inner area, without padding area, is visible */
+    linear-gradient(#fff 0 0) content-box,
+
+  /* 2) whole button is visible (#fff is visible, #000 not vis., #888 50%)*/
+    linear-gradient(#fff 0 0); 
+  mask-composite: exclude;
+  
+  /* exclude:  2 - 1 = padding area */
+  /* gradiebt padding areia is visible*/
+  pointer-events: none;
+}
+
+.gradient-direction-left::before {
+  background: linear-gradient(to left, #facc15, #f0ec9a, #ef4444)
+}
+
+.gradient-direction-right::before {
+  background: linear-gradient(to right, #f0ec9a, #facc15, #ef4444)
+}
+.gradient-direction-bottom::before {
+  background: linear-gradient(to bottom, #f0ec9a, #facc15, #ef4444)
+}
+
