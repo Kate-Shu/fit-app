@@ -1,28 +1,18 @@
 import { FC } from "react";
+import { baseStyles, disabledStyles, variants } from "./ButtonStyles";
 
 type ButtonTypes = {
  children?: React.ReactNode
- type?: 'button' | 'submit',
- variant: "primary" | "submit",
+ variant: "primary" | "submit" | "icon",
  onClick?: () => void,
  disabled?: boolean,
- gradientDirection: "left" | "right" | "bottom",
+ className?: string
 }
 
-const variants = {
- primary: "relative inline-block py-2 px-4 w-70 rounded-4xl text-text-main border-gradient",
- submit: "w-10 h10 rounded-full bg-bg-secondary color-text-main"
-}
-const gradientDirections = {
- left: "gradient-direction-left",
- right: "gradient-direction-right",
- bottom: "gradient-direction-bottom"
-}
-const baseStyles = 'inline-flex justify-center items-center'
-
-const Button: FC<ButtonTypes> = ({ type, variant, onClick, disabled, children, gradientDirection }) => {
+const Button: FC<ButtonTypes> = ({ variant, onClick, disabled, children, className }) => {
+ const variantClasses = variants[variant]
  return (
-  <button type={type} onClick={onClick} disabled={disabled} className={`${baseStyles} ${variants[variant]} ${gradientDirections[gradientDirection]}`}>
+  <button onClick={onClick} disabled={disabled} className={`${baseStyles} ${variantClasses} ${className ?? ''} ${disabled ? disabledStyles : ''} `}>
    {children}
   </button>
  )

@@ -15,6 +15,8 @@
   --color-bg-secondary: #130d06;
   --color-text-main: #ebc78d;
   --color-text-light: #f0ec9a;
+  --color-border: #e89f29;
+  --color-border-secondary: #facc15;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -34,20 +36,7 @@ body {
   height: 100vh;
   min-height: 100vh;
 }
-.border-gradient{
-  background-clip: padding-box;
-  border: 2px solid transparent;
-  position: relative
-}
-.border-gradient::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 3px;
-  background: linear-gradient(to right, orange, red);
 
-}
 /* to get transparent border */
 .border-gradient {
   /* gradient for content + padding. X Border X */
@@ -55,34 +44,52 @@ body {
   border: 3px solid transparent;
   position: relative;
 }
+
 /* to get padding area */
 .border-gradient::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  mask:
-  /* 1) inner area, without padding area, is visible */
-    linear-gradient(#fff 0 0) content-box,
-
-  /* 2) whole button is visible (#fff is visible, #000 not vis., #888 50%)*/
-    linear-gradient(#fff 0 0); 
-  mask-composite: exclude;
-  
-  /* exclude:  2 - 1 = padding area */
-  /* gradiebt padding areia is visible*/
-  pointer-events: none;
+  	content: "";
+  	position: absolute;
+  	inset: 0;
+  	border-radius: inherit;
+  	padding: 1px;
+  	mask:  /* 1) inner area, without padding area, is visible */    
+    linear-gradient(#fff 0 0) content-box,  
+    /* 2) whole button is visible (#fff is visible, #000 not vis., #888 50%)*/    
+    linear-gradient(#fff 0 0);
+  	mask-composite: exclude;
+  	/*exclude:;
+  	2-1=paddingarea*//*gradiebtpaddingareiaisvisible*/
+    pointer-events: none;
 }
 
-.gradient-direction-left::before {
-  background: linear-gradient(to left, #facc15, #f0ec9a, #ef4444)
+.gradient-frst::before {
+  --gradient: linear-gradient(270deg, #f0ec9a, #ef4444, #facc15, #f0ec9a);
+}
+.gradient-snd::before {
+  --gradient: linear-gradient(270deg, #facc15, #ef4444,  #f0ec9a, #facc15 );
+
+}
+.gradient-thrd::before {
+  --gradient: linear-gradient(270deg, #ef4444, #facc15, #f0ec9a, #ef4444);
 }
 
-.gradient-direction-right::before {
-  background: linear-gradient(to right, #f0ec9a, #facc15, #ef4444)
-}
-.gradient-direction-bottom::before {
-  background: linear-gradient(to bottom, #f0ec9a, #facc15, #ef4444)
+.gradient-frst::before,
+.gradient-snd::before,
+.gradient-thrd::before {
+ background: var(--gradient);
+ background-size: 200% auto;
+ animation: gradientMove 2s linear infinite;
+ -webkit-animation: gradientMove 2s linear infinite;
 }
 
+@keyframes gradientMove{
+	 0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
