@@ -2,17 +2,19 @@
 import { useState } from "react";
 import Button from "../ui/Button";
 import CloseIcon from "../ui/icons/CloseIcon"
-import { log } from "console";
+import SendIcon from "../ui/icons/SendIcon";
+import { AIAvatarIcon } from "../ui/icons/AIAvatarIcon";
+import { UserAvatarIcon } from "../ui/icons/UserAvatarIcon";
 
 type MessageType = {
  role: 'user' | 'assistant',
  text: string
 }
-type AssistantOverlayType = {
+type ChatType = {
  isOpen: boolean,
  onClose: () => void
 }
-const AssistantOverlay = ({ isOpen, onClose }: AssistantOverlayType) => {
+const Chat = ({ isOpen, onClose }: ChatType) => {
  const [messages, setMessages] = useState<MessageType[]>([])
  const [inputVal, setInputVal] = useState('')
  const [isLoading, setLoading] = useState(false)
@@ -41,7 +43,7 @@ const AssistantOverlay = ({ isOpen, onClose }: AssistantOverlayType) => {
 
  console.log('mes:', messages)
  return (
-  <div className="absolute bottom-15 left-10 w-1/2 h-1/2 z-50 border border-border rounded-2xl flex flex-col bg-bg-secondary/95">
+  <div className="absolute bottom-10 left-10 w-1/2 h-3/5 z-50 border border-border rounded-2xl flex flex-col bg-bg-secondary/95">
    <header className="flex justify-between items-center py-2 px-5 border-b border-b-border bg-amber-950/55 rounded-t-2xl">
     <p className="text-text-main font-semibold text-xl">Fitness AI assistant</p>
     <Button variant='icon' onClick={onClose}>
@@ -49,11 +51,14 @@ const AssistantOverlay = ({ isOpen, onClose }: AssistantOverlayType) => {
     </Button>
    </header>
    {/* message container */}
-   <div className="flex flex-col justify-end flex-1 gap-2 overflow-y-auto">
+   <div className="flex flex-col justify-end flex-1 gap-3 overflow-y-auto p-3">
     {messages.map((message, i) =>
-    (<div key={i} className={`flex ${message.role === 'user' ? 'flex-row-reverse' : ''} text-text-light`}>
-     <CloseIcon />
-     {message.text}
+    (<div key={i} className={`flex ${message.role === 'user' ? 'flex-row-reverse' : ''} text-text-main`}>
+     {message.role === 'user' ? (
+      <UserAvatarIcon size={26} strokeWidth={1} className="text-text-light ml-2" />) : (
+      <AIAvatarIcon size={26} strokeWidth={1} className="text-text-light mr-2" />
+     )}
+     <span>{message.text}</span>
     </div>)
     )}
     {
@@ -75,11 +80,11 @@ const AssistantOverlay = ({ isOpen, onClose }: AssistantOverlayType) => {
      autoFocus
     />
     <Button disabled={!inputVal.trim() || isLoading} variant="submit" onClick={sendMessage}>
-     <CloseIcon />
+     <SendIcon />
     </Button>
    </div>
 
   </div>
  )
 }
-export default AssistantOverlay;
+export default Chat;
