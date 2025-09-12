@@ -44,7 +44,7 @@ const Chat = ({ isOpen, onClose }: ChatType) => {
  console.log('mes:', messages)
  return (
   <div className="absolute bottom-10 left-10 w-1/2 h-3/5 z-50 border border-border rounded-2xl flex flex-col bg-bg-secondary/95">
-   <header className="flex justify-between items-center py-2 px-5 border-b border-b-border bg-amber-950/55 rounded-t-2xl">
+   <header className="flex justify-between items-center py-2 px-5 border border-border bg-amber-950/55 rounded-t-2xl">
     <p className="text-text-main font-semibold text-xl">Fitness AI assistant</p>
     <Button variant='icon' onClick={onClose}>
      <CloseIcon />

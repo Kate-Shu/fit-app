@@ -19,7 +19,7 @@ const Home = () => {
       </section>
       <section className="h-full min-h-full flex justify-center items-center">
         {/* need fallback for Image? */}
-        <Image src='/main-no-bg.png' alt='main image' width={812} height={1490} priority className="w-auto max-h-full h-full object-contain mb-17">
+        <Image src='/main-no-bg.png' alt='main image' width={812} height={1490} sizes="100vh" className="w-auto max-h-full h-full object-contain mb-17">
         </Image>
       </section>
       <Chat isOpen={openOverlay} onClose={() => setOpenOverlay(false)} />

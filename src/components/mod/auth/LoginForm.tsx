@@ -1,0 +1,81 @@
+import * as React from "react";
+import { Button, Form, Input } from "@heroui/react";
+import { useState } from "react";
+
+type LoginFormType = {
+ onClose: () => void
+}
+const LoginForm: React.FC<LoginFormType> = ({ onClose }) => {
+ const [formData, setFormData] = useState({
+  email: '',
+  password: '',
+  confirmPassword: ''
+ });
+
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  console.log('Form submitted:', formData);
+  onClose()
+ };
+
+ return (
+  <Form className="w-full max-w-xs" onSubmit={handleSubmit}>
+   {/* email */}
+   <Input
+    isRequired
+    errorMessage="Please enter a valid email"
+    label="Email"
+    labelPlacement="outside"
+    name="email"
+    placeholder="Enter your email"
+    type="email"
+    value={formData.email}
+    classNames={{
+     base: "group",
+     inputWrapper: "!bg-amber-950/55 border border-border transition-colors" +
+      "group-data-[hover=true]:!bg-amber-950/70 " +
+      "group-data-[focus=true]:!bg-amber-900/60",
+     input: 'text-sm, focus:outline-none',
+     label: "!text-text-main"
+    }}
+    onChange={e => setFormData({ ...formData, email: e.target.value })}
+    validate={value => {
+     if (!value) return 'email is required'
+     return null
+    }}
+   />
+   {/* password */}
+   <Input
+    isRequired
+    label="Password"
+    labelPlacement="outside"
+    name="password"
+    placeholder="Enter your password"
+    type="password"
+    value={formData.email}
+    classNames={{
+     base: "group",
+     inputWrapper: "!bg-amber-950/55 border border-border transition-colors" +
+      "group-data-[hover=true]:!bg-amber-950/70 " +
+      "group-data-[focus=true]:!bg-amber-900/60",
+     input: 'text-sm, text-text-main, focus:outline-none',
+     label: "!text-text-main"
+    }}
+    onChange={e => setFormData({ ...formData, password: e.target.value })}
+    validate={value => {
+     if (!value) return 'passwotd is required'
+     return null
+    }}
+   />
+   <div className="flex w-[100%] gap-4 items-center pt-8 justify-end">
+    <Button variant="light" onPress={onClose} className="text-text-main hover:text-text-light hover:!bg-transparent border border-border rounded-lg">
+     Cancel
+    </Button>
+    <Button type="submit" className="text-text-main hover:text-text-light bg-amber-950/55 hover:bg-amber-950/70 border border-border rounded-lg">
+     Login
+    </Button>
+   </div>
+  </Form>
+ );
+}
+export default LoginForm

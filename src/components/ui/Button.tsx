@@ -3,7 +3,7 @@ import { baseStyles, disabledStyles, variants } from "./ButtonStyles";
 
 type ButtonTypes = {
  children?: React.ReactNode
- variant: "primary" | "submit" | "icon",
+ variant: "primary" | "submit" | "icon" | "text",
  onClick?: () => void,
  disabled?: boolean,
  className?: string
