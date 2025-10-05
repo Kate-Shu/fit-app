@@ -52,7 +52,7 @@ const LoginForm: React.FC<LoginFormType> = ({ onClose }) => {
     name="password"
     placeholder="Enter your password"
     type="password"
-    value={formData.email}
+    value={formData.password}
     classNames={{
      base: "group",
      inputWrapper: "!bg-amber-950/55 border border-border transition-colors" +
@@ -63,7 +63,7 @@ const LoginForm: React.FC<LoginFormType> = ({ onClose }) => {
     }}
     onChange={e => setFormData({ ...formData, password: e.target.value })}
     validate={value => {
-     if (!value) return 'passwotd is required'
+     if (!value) return 'password is required'
      return null
     }}
    />

@@ -78,6 +78,12 @@ const Chat = ({ isOpen, onClose }: ChatType) => {
      className="w-full min-h-2 outline-none resize-none px-4 py-2 text-text-main leading-tight"
      placeholder="Ask something your assistant..."
      autoFocus
+     onKeyDown={(e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+       e.preventDefault();
+       sendMessage();
+      }
+     }}
     />
     <Button disabled={!inputVal.trim() || isLoading} variant="submit" onClick={sendMessage}>
      <SendIcon />

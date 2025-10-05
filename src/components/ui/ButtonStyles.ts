@@ -7,5 +7,5 @@ export const variants = {
  text: "bg-transparent border-none cursor-pointer text-text-light font-serif uppercase"
 }
 
-export const disabledStyles = 'cursor-not-allowed text-gray-400'
+export const disabledStyles = '!cursor-not-allowed !text-gray-400'
 
