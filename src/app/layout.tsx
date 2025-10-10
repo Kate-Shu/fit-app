@@ -4,6 +4,9 @@ import "./globals.css";
 import Header from "@/components/ui/layout/Header";
 import Footer from "@/components/ui/layout/Footer";
 import { Providers } from "@/providers/provider";
+import { SessionProvider } from "next-auth/react"
+import { auth } from "@/auth/auth";
+
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -15,24 +18,27 @@ export const metadata: Metadata = {
   description: "Your Fitnes AI assistance",
 };
 
-const RootLayout = ({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) => {
+}>) {
+
+  const session = await auth()
   return (
     <html lang="en">
       <body
         className={`${geistMono.variable} font-sans antialiased flex flex-col overflow-hidden`}
       >
         <Providers>
-          <Header />
-          {children}
-          <Footer />
+          <SessionProvider session={session}>
+            <Header />
+            {children}
+            <Footer />
+          </SessionProvider>
         </Providers>
       </body>
     </html>
   );
 }
-export default RootLayout;
 

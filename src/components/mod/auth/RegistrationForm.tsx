@@ -74,7 +74,7 @@ const RegistrationForm: React.FC<RegistrationFormType> = ({ onClose }) => {
         onChange={e => setFormData({ ...formData, password: e.target.value })}
         validate={value => {
           if (!value) return 'password is required'
-          if (value.length < 1) return 'Password should be not less than 6 symbols'
+          if (value.length < 6) return 'Password should be not less than 6 symbols'
           return null
         }}
       />
