@@ -6,6 +6,7 @@ import Footer from "@/components/ui/layout/Footer";
 import { Providers } from "@/providers/provider";
 import { SessionProvider } from "next-auth/react"
 import { auth } from "@/auth/auth";
+import AppLoader from "@/components/hoc/app-loader";
 
 
 const geistMono = Geist_Mono({
@@ -32,9 +33,11 @@ export default async function RootLayout({
       >
         <Providers>
           <SessionProvider session={session}>
-            <Header />
-            {children}
-            <Footer />
+            <AppLoader>
+              <Header />
+              {children}
+              <Footer />
+            </AppLoader>
           </SessionProvider>
         </Providers>
       </body>

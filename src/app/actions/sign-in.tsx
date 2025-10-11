@@ -9,7 +9,7 @@ export async function signInWithCredentials(email: string, password: string) {
     })
     return result
   } catch (error) {
-    console.log('Authorizationerror: ', error)
+    console.log('Authorization error: ', error)
     throw error
   }
 }
