@@ -37,17 +37,15 @@ const Header = () => {
           <Link href={"#"}>Programs</Link>
           <Link href={"#"}>Features</Link>
         </div>
+
         <div className="flex items-center gap-4">
-          {!isAuth ? (
+          {isAuth && <p>Hello, {userName}!</p>}
+          {status === 'loading' ? <p>Loading...</p> : !isAuth ? (
             <>
               <Button className='ml-2' variant="text" onClick={() => setRegistrationOpen(true)}>Registration</Button>
               <Button variant="text" onClick={() => setLoginOpen(true)}>Login</Button>
             </>
-          ) : <>
-            <p>Hello, {userName}</p>
-            <Button variant="text" onClick={handleSignOut}>Logout</Button>
-          </>
-          }
+          ) : <Button variant="text" onClick={handleSignOut}>Logout</Button>}
         </div>
       </div>
       <RegistrationModal onClose={() => setRegistrationOpen(false)} isOpen={isRegistrationOpen} />
