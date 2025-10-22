@@ -42,10 +42,10 @@ const RegistrationForm: React.FC<RegistrationFormType> = ({ onClose }) => {
         classNames={{
           base: "group",
           inputWrapper: "!bg-amber-950/55 border border-border transition-colors" +
-            "group-data-[hover=true]:!bg-amber-950/70 " +
-            "group-data-[focus=true]:!bg-amber-900/60",
-          input: 'text-sm, focus:outline-none',
-          label: "!text-text-main"
+            "group-data-[hover=true]:!bg-green" +
+            "group-data-[focus=true]:!bg-amber",
+          input: "text-sm focus:outline-none",
+          label: "!text-text-main",
         }}
         onChange={e => setFormData({ ...formData, email: e.target.value })}
         validate={value => {

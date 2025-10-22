@@ -33,7 +33,7 @@ const Header = () => {
       <div className="px-9 py-4 flex justify-between items-center font-serif">
         <div className="flex items-center gap-4 uppercase">
           <Link href={"#"}>Home</Link>
-          <Link href={"#"}>About us</Link>
+          <Link href={"#"} className="whitespace-nowrap">About us</Link>
           <Link href={"#"}>Programs</Link>
           <Link href={"#"}>Features</Link>
         </div>

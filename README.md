@@ -37,8 +37,3 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 # fit-app
 Fitness app built with Next.js, Typescript and Tailwindcss and AI integration for personalized workout and dance guidance.
-
-pass for DB in pgAdmin4: kateshu123
-prisma studio GUI: npx prisma studio
-
-moved actions/register from src root to src/app
