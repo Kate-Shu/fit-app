@@ -32,7 +32,7 @@ const Chat = ({ isOpen, onClose }: ChatType) => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ prompt: messageText }),
-      signal: controller.signal, // 👈 важливо
+      signal: controller.signal,
     });
 
     if (!res.ok) throw new Error('AI request failed');

@@ -58,3 +58,18 @@ model VerificationToken {
   @@unique([identifier, token])
   @@map("verification_tokens")
 }
+
+model AiQuota {
+  id       String   @id @default(cuid())
+  userId   String
+  day      DateTime
+  dayCount Int      @default(0)
+
+  hourWindowStart DateTime
+  hourCount       Int      @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, day])
+}
