@@ -23,7 +23,9 @@ if (!session?.user) {
 }
 
 const userId =
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (session.user as any).id ??
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (session.user as any).email;
 
 console.log("userId from session:", userId);
