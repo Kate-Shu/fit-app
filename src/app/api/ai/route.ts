@@ -1,19 +1,55 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 import { SYSTEM_PROMPT } from "@/utils/constants";
-import { requireUserId } from "@/utils/helpers";
+import { checkAndConsumeQuota } from "@/lib/AiQuota";
+import { auth } from "@/auth/auth";
 
 export const runtime = "nodejs";
 const MAX_USER_CHARS = 1400;
-const MAX_RESPONSE_TOKENS = 220;
+// const MAX_RESPONSE_TOKENS = 220;
 
 export async function POST(req: Request) {
   try {
-const userId = await requireUserId();
-if (!userId) return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+    // 1
+    // TODO here have error
+const session = await auth();
+console.log("SESSION IN /api/ai:", session, '---end---');
 
+if (!session?.user) {
+  return NextResponse.json(
+    { error: "You must be logged in to use the AI assistant." },
+    { status: 401 }
+  );
+}
+
+const userId =
+  (session.user as any).id ??
+  (session.user as any).email;
+
+console.log("userId from session:", userId);
+
+if (!userId) {
+  return NextResponse.json(
+    { error: "Could not get user identifier from session." },
+    { status: 401 }
+  );
+}
+
+
+  // 2️⃣ QUOTA / RATE LIMIT – ліміти по акаунту
+    const quota = await checkAndConsumeQuota(userId);
+    if (!quota.ok) {
+      return NextResponse.json(
+        { error: quota.message },
+        { status: quota.status }
+      );
+    }
+    console.log('quota is: ', quota);
     
-    const { prompt } = await req.json();
+      // 3️⃣ INPUT – читаємо і обрізаємо промпт
+    const body = await req.json().catch(() => null);
+    const prompt = body?.prompt;
+
     console.log('promt is: ', prompt);
     
     if (!prompt || typeof prompt !== "string") {
@@ -33,18 +69,16 @@ if (!userId) return NextResponse.json({ error: "Not authenticated" }, { status: 
       model: "gpt-5-nano",
       // gpt-5-nano model suppotr only temperature: 1
       // temperature: 0.2,
-      max_tokens: MAX_RESPONSE_TOKENS,
+      // max_completion_tokens: MAX_RESPONSE_TOKENS,
       messages: [
         { role: "system", content: SYSTEM_PROMPT.slice(0, 2000) },
         { role: "user", content: safePrompt },
       ],
     });
-    console.log('stream: ', stream);
-    
+  
 
     const readable = new ReadableStream({
       async start(controller) {
-      console.log('stream: ', stream);
         try {
           for await (const chunk of stream) {
             const content = chunk.choices?.[0]?.delta?.content;
@@ -54,6 +88,7 @@ if (!userId) return NextResponse.json({ error: "Not authenticated" }, { status: 
         } catch (err: any) {
           console.log('stream: ', stream);
           console.error("OpenAI error:", err?.message || err);
+
           const msg =
           typeof err?.message === "string"
             ? `\n\n(⚠️ OpenAI error: ${err.message})`

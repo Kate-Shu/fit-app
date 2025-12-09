@@ -18,7 +18,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can run GUI Prisma
 ```bash
-npx prisma generate
+npx prisma studio
 ```
 
 Update Prisma schema

@@ -35,7 +35,35 @@ const Chat = ({ isOpen, onClose }: ChatType) => {
       signal: controller.signal,
     });
 
-    if (!res.ok) throw new Error('AI request failed');
+    if (!res.ok) {
+      let errorMsg = "Request failed";
+
+      try {
+        const json = await res.json();
+        if (json?.error) errorMsg = json.error;
+      } catch { }
+
+      setMessages(prev => {
+        const copy = [...prev];
+        const last = copy[copy.length - 1];
+
+        if (last?.role === "assistant") {
+          // замінюємо порожній ассистент на помилку
+          copy[copy.length - 1] = {
+            ...last,
+            text: `⚠️ ${errorMsg}`,
+          };
+        } else {
+          // запасний варіант, якщо раптом немає assistant
+          copy.push({ role: "assistant", text: `⚠️ ${errorMsg}` });
+        }
+
+        return copy;
+      });
+
+      return; // DO NOT start streaming
+    }
+
     if (!res.body) return;
 
     const reader = res.body.getReader();
@@ -135,6 +163,7 @@ const Chat = ({ isOpen, onClose }: ChatType) => {
       });
     }
   };
+  console.log('messages: ', messages);
 
   return (
     <div className="absolute bottom-10 left-10 w-1/2 h-3/5 z-50 border border-border rounded-2xl flex flex-col bg-bg-secondary/95">
