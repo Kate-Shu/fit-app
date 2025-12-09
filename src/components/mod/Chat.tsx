@@ -163,7 +163,6 @@ const Chat = ({ isOpen, onClose }: ChatType) => {
       });
     }
   };
-  console.log('messages: ', messages);
 
   return (
     <div className="absolute bottom-10 left-10 w-1/2 h-3/5 z-50 border border-border rounded-2xl flex flex-col bg-bg-secondary/95">
