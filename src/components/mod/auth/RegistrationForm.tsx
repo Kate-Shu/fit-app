@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from "react";
-import { Button, Form, Input } from "@heroui/react";
+import { Button, Form, Input, addToast } from "@heroui/react";
 import { useState } from "react";
 import { RegisterUser } from "@/app/actions/register";
 
@@ -11,6 +11,7 @@ type RegistrationFormType = {
   onClose: () => void
 }
 const RegistrationForm: React.FC<RegistrationFormType> = ({ onClose }) => {
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -21,7 +22,23 @@ const RegistrationForm: React.FC<RegistrationFormType> = ({ onClose }) => {
     console.log('Form submitted:', formData);
     const result = await RegisterUser(formData)
     console.log('result is: ', result)
-    onClose()
+
+    if (!result.ok) {
+      addToast({
+        description: result.message,
+        color: 'danger',
+        variant: 'flat'
+      })
+    } else {
+      addToast({
+        description: result.message,
+        color: "success",
+        variant: "solid",
+      });
+    }
+
+
+    setTimeout(() => onClose(), 1200)
   };
 
   const validateEmail = (email: string) => {

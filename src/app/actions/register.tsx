@@ -3,13 +3,17 @@ import { FormDataTypes } from "@/types/appTypes";
 import prisma from "@/utils/prisma";
 import { saltAndHashPassword } from "@/utils/saltAndHashPassword";
 
-export async function RegisterUser(formData: FormDataTypes) {
+type RegisterResult =
+  | { ok: true; message: string }
+  | { ok: false; message: string };
+
+export async function RegisterUser(formData: FormDataTypes): Promise<RegisterResult> {
   const { email, password, confirmPassword } = formData
   if (password !== confirmPassword) {
-    return { error: "Passwords do not match" }
+    return { ok: false, message: "Passwords do not match" }
   }
   if (password.length < 6) {
-    return { error: "Password must be at least 6 characters long" }
+    return { ok: false, message: "Password must be at least 6 characters long" }
   }
 
   try {
@@ -19,21 +23,24 @@ export async function RegisterUser(formData: FormDataTypes) {
       }
     })
     if (existingUser) {
-      return { error: "User already exists" }
+      return { ok: false, message: "User already exists" }
     }
 
     const pwHash = await saltAndHashPassword(password)
+
     const user = await prisma.user.create({
       data: {
         email: email,
         password: pwHash
-      }
+      },
+
     })
     console.log('user: ', user);
-    return user
+    return { ok: true, message: "Registration succesfull" }
+
   } catch (error) {
     console.error('Registration error is:', error)
-    return { error: "Registration error" }
+    return { ok: false, message: "Registration error" }
   }
 
 }
