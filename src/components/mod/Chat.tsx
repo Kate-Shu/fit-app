@@ -1,11 +1,12 @@
 'use client'
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "../ui/Button";
 import CloseIcon from "../ui/icons/CloseIcon"
 import SendIcon from "../ui/icons/SendIcon";
 import { AIAvatarIcon } from "../ui/icons/AIAvatarIcon";
 import { UserAvatarIcon } from "../ui/icons/UserAvatarIcon";
 import StopIcon from "../ui/icons/StopIcon";
+import { useSession } from "next-auth/react";
 
 type MessageType = {
   role: 'user' | 'assistant',
@@ -19,7 +20,7 @@ const Chat = ({ isOpen, onClose }: ChatType) => {
   const [messages, setMessages] = useState<MessageType[]>([])
   const [inputVal, setInputVal] = useState<string>('')
   const [isLoading, setLoading] = useState<boolean>(false)
-
+  const { status } = useSession()
   const abortRef = useRef<AbortController | null>(null);
 
   // ===== ai request (stream) =====
@@ -121,8 +122,17 @@ const Chat = ({ isOpen, onClose }: ChatType) => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => setInputVal(e.target.value);
+  console.log('messages: ', messages);
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      setMessages([]);
+      console.log('clear messages and close chat when auth user log out');
+    }
+    console.log(status, '2 clear messages and close chat when auth user log out');
+  }, [status]);
+
+  // if (!isOpen) return null;
 
   const sendMessage = async () => {
     if (isLoading) return; // захист від повторних відправлень
@@ -146,18 +156,17 @@ const Chat = ({ isOpen, onClose }: ChatType) => {
     }
   };
 
-  // 👇 кнопка STOP
+  // кнопка STOP
   const stopStreaming = () => {
     if (abortRef.current) {
       abortRef.current.abort();      // перериваємо fetch/стрім
       abortRef.current = null;
       setLoading(false);
-      // (не обовʼязково) Позначити, що відповідь урвана:
       setMessages(prev => {
         const copy = [...prev];
         const last = copy[copy.length - 1];
         if (last?.role === 'assistant' && last.text === '') {
-          copy[copy.length - 1] = { ...last, text: '(stopped)' };
+          copy[copy.length - 1] = { ...last, text: 'stopped' };
         }
         return copy;
       });
@@ -165,7 +174,7 @@ const Chat = ({ isOpen, onClose }: ChatType) => {
   };
 
   return (
-    <div className="absolute bottom-10 left-10 w-1/2 h-3/5 z-50 border border-border rounded-2xl flex flex-col bg-bg-secondary/95">
+    <div className={`fixed ${isOpen ? "block" : "hidden"} bottom-10 left-10 w-3/4 md:w-1/2 h-3/4 md:h-3/5 z-50 border border-border rounded-2xl flex flex-col bg-bg-secondary/95`}>
       <header className="flex justify-between items-center py-2 px-5 border border-border bg-amber-950/55 rounded-t-2xl">
         <p className="text-text-main font-semibold text-xl">Fitness AI assistant</p>
         <div className="flex gap-2">
@@ -180,10 +189,8 @@ const Chat = ({ isOpen, onClose }: ChatType) => {
         {messages.map((message, i) => {
           const isAssistant = message.role === 'assistant';
           const isPendingAssistant = isAssistant && message.text === '' && isLoading;
-
           return (
             <div key={i} className={`flex ${message.role === 'user' ? 'flex-row-reverse' : ''} text-text-main items-start`}>
-
               {isAssistant ? (
                 <AIAvatarIcon size={26} strokeWidth={1} className="text-text-light mr-2 flex-shrink-0 self-start" />
               ) : (

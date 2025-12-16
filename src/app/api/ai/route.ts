@@ -9,11 +9,13 @@ const MAX_USER_CHARS = 1400;
 // const MAX_RESPONSE_TOKENS = 220;
 
 export async function POST(req: Request) {
+  console.log("------LOCAL DATABASE_URL:", process.env.DATABASE_URL)
   try {
     // 1
     // TODO here have error
 const session = await auth();
 console.log("SESSION IN /api/ai:", session, '---end---');
+  console.log("------LOCAL DATABASE_URL:", process.env.DATABASE_URL)
 
 if (!session?.user) {
   return NextResponse.json(

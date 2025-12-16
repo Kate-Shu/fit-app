@@ -1,12 +1,13 @@
 'use client'
 import LoginModal from "@/components/mod/modals/LoginModal";
 import RegistrationModal from "@/components/mod/modals/RegistrationModal";
-// import { Button } from "@heroui/react";
-import Link from "next/link";
+
+
 import { useState } from "react";
 import Button from "../Button";
-import { signOutFunc } from "@/app/actions/sign-out";
+// import { signOutFunc } from "@/app/actions/sign-out";
 import { useAuthStore } from "@/store/auth.store";
+import { signOut } from "next-auth/react";
 
 const Header = () => {
 
@@ -17,7 +18,7 @@ const Header = () => {
 
   const handleSignOut = async () => {
     try {
-      await signOutFunc()
+      signOut({ redirect: false })
     } catch (error) {
       console.log('error sign out', error)
     }
@@ -29,13 +30,13 @@ const Header = () => {
   console.log('isAuth', isAuth)
 
   return (
-    <header className="flex-shrink-0 sticky top-0 z-10 text-text-light">
+    <header className="flex-shrink-0 sticky top-0 z-10 text-text-light h-max-15">
       <div className="px-9 py-4 flex justify-between items-center font-serif">
         <div className="flex items-center gap-4 uppercase">
-          <Link href={"#"}>Home</Link>
+          {/* <Link href={"#"}>Home</Link>
           <Link href={"#"} className="whitespace-nowrap">About us</Link>
           <Link href={"#"}>Programs</Link>
-          <Link href={"#"}>Features</Link>
+          <Link href={"#"}>Features</Link> */}
         </div>
 
         <div className="flex items-center gap-4">

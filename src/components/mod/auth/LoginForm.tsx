@@ -12,14 +12,22 @@ const LoginForm: React.FC<LoginFormType> = ({ onClose }) => {
     password: '',
     confirmPassword: ''
   });
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
-    await signInWithCredentials(formData.email, formData.password)
+    const result = await signInWithCredentials(formData.email, formData.password);
+
+    if (!result.ok) {
+      setErrorMsg(result.message);
+      return;
+    }
+
+    setErrorMsg(null);
     // TODO fix this solution
-    window.location.reload()
-    onClose()
+    window.location.reload();
+    onClose();
   };
 
   return (
@@ -72,6 +80,7 @@ const LoginForm: React.FC<LoginFormType> = ({ onClose }) => {
         }}
       />
       <div className="flex w-[100%] gap-4 items-center pt-8 justify-end">
+        {errorMsg && <p className="text-red-500 text-sm w-full text-right">{errorMsg}</p>}
         <Button variant="light" onPress={onClose} className="text-text-main hover:text-text-light hover:!bg-transparent border border-border rounded-lg">
           Cancel
         </Button>
