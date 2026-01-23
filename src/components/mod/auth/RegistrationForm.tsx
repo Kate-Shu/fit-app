@@ -59,10 +59,14 @@ const RegistrationForm: React.FC<RegistrationFormType> = ({ onClose }) => {
         classNames={{
           base: "group",
           inputWrapper: "!bg-amber-950/55 border border-border transition-colors" +
-            "group-data-[hover=true]:!bg-green" +
-            "group-data-[focus=true]:!bg-amber",
-          input: "text-sm focus:outline-none",
-          label: "!text-text-main",
+            "group-data-[hover=true]:!bg-amber-950/70 " +
+            "group-data-[focus=true]:!bg-amber-900/60",
+          input: `
+            text-sm focus:outline-none
+            [&:-webkit-autofill]:[-webkit-text-fill-color:#ebc78d]
+            [&:-webkit-autofill]:[caret-color:#ebc78d]
+          `,
+          label: "!text-text-main"
         }}
         onChange={e => setFormData({ ...formData, email: e.target.value })}
         validate={value => {
@@ -82,8 +86,9 @@ const RegistrationForm: React.FC<RegistrationFormType> = ({ onClose }) => {
         value={formData.password}
         classNames={{
           base: "group",
-          inputWrapper: "!bg-amber-950/55 border border-border transition-colors" +
-            "group-data-[hover=true]:!bg-amber-950/70 " +
+          inputWrapper:
+            "!bg-amber-950/55 border border-border transition-colors" +
+            "group-data-[hover=true]:!bg-amber-950/70" +
             "group-data-[focus=true]:!bg-amber-900/60",
           input: 'text-sm, text-text-main, focus:outline-none',
           label: "!text-text-main"
@@ -106,7 +111,8 @@ const RegistrationForm: React.FC<RegistrationFormType> = ({ onClose }) => {
         value={formData.confirmPassword}
         classNames={{
           base: "group",
-          inputWrapper: "!bg-amber-950/55 border border-border transition-colors" +
+          inputWrapper:
+            "!bg-amber-950/55 border border-border transition-colors" +
             "group-data-[hover=true]:!bg-amber-950/70 " +
             "group-data-[focus=true]:!bg-amber-900/50",
           input: 'text-sm, focus:outline-none',
@@ -120,7 +126,17 @@ const RegistrationForm: React.FC<RegistrationFormType> = ({ onClose }) => {
         }}
       />
       <div className="flex w-[100%] gap-4 items-center pt-8 justify-end">
-        <Button variant="light" onPress={onClose} className="text-text-main hover:text-text-light hover:!bg-transparent border border-border rounded-lg">
+        <Button variant="light"
+          onPress={onClose}
+          className=" text-text-main
+    border border-border rounded-lg
+    hover:text-text-light
+    hover:bg-transparent!
+    focus:outline-none
+    focus-visible:outline-none
+    focus-visible:ring-0
+    focus-visible:border-borde
+">
           Cancel
         </Button>
         <Button type="submit" className="text-text-main hover:text-text-light bg-amber-950/55 hover:bg-amber-950/70 border border-border rounded-lg">

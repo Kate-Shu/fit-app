@@ -47,7 +47,11 @@ const LoginForm: React.FC<LoginFormType> = ({ onClose }) => {
           inputWrapper: "!bg-amber-950/55 border border-border transition-colors" +
             "group-data-[hover=true]:!bg-amber-950/70 " +
             "group-data-[focus=true]:!bg-amber-900/60",
-          input: 'text-sm, focus:outline-none',
+          input: `
+            text-sm focus:outline-none
+            [&:-webkit-autofill]:[-webkit-text-fill-color:#ebc78d]
+            [&:-webkit-autofill]:[caret-color:#ebc78d]
+          `,
           label: "!text-text-main"
         }}
         onChange={e => setFormData({ ...formData, email: e.target.value })}
