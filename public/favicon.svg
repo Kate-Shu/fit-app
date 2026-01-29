@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Background circle -->
+  <circle cx="32" cy="32" r="32" fill="#391e0c"/>
+
+  <!-- Barbell -->
+  <g fill="#ebc78d">
+    <!-- Left plate -->
+    <rect x="6" y="22" width="6" height="20" rx="2"/>
+    <!-- Right plate -->
+    <rect x="52" y="22" width="6" height="20" rx="2"/>
+    
+    <!-- Curved bar sagging downward -->
+    <path d="M12,32 Q32,24 52,32" stroke="#ebc78d" stroke-width="4" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>
