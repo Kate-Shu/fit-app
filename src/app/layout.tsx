@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Geist_Mono } from "next/font/google";
+import "@n8n/chat/style.css";
 import "./globals.css";
 import Header from "@/components/ui/layout/Header";
 import Footer from "@/components/ui/layout/Footer";
+import N8nChat from "@/components/mod/N8nChat";
 import { Providers } from "@/providers/provider";
 import { SessionProvider } from "next-auth/react"
 import { auth } from "@/auth/auth";
@@ -39,6 +41,7 @@ export default async function RootLayout({
             <AppLoader>
               <Header />
               {children}
+              <N8nChat />
               <Footer />
             </AppLoader>
           </SessionProvider>
@@ -47,4 +50,3 @@ export default async function RootLayout({
     </html>
   );
 }
-
