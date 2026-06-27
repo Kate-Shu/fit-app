@@ -200,3 +200,13 @@ body {
   color: #f8e7b8;
   transform: scale(0.94);
 }
+
+.n8n-chat .chat-input-file-button:not([disabled]) {
+  background: transparent;
+  color: #d65307;
+}
+
+.n8n-chat .chat-input-file-button:hover:not([disabled]) {
+  background: transparent;
+  color: #e89f29;
+}
